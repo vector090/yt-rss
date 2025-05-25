@@ -22,7 +22,6 @@ from feedgen.feed import FeedGenerator
 from flask import Flask, request, abort
 from markupsafe import escape
 
-
 def convert_feed(feed):
     fg = FeedGenerator()
     fg.id(feed['feed']['id'])
@@ -48,6 +47,7 @@ def convert_feed(feed):
         fe.published(entry['published'])
         fe.updated(entry['updated'])
 
+    print("return")
     return fg
 
 
@@ -57,11 +57,19 @@ app = Flask(__name__)
 
 @app.route('/<channel_id>')
 def get(channel_id):
-    if request.args['token'] != os.getenv('TOKEN'):
-        abort(401)
-        return
-    d = feedparser.parse(
-        f'https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}'
-    )
+    #print("get "+channel_id)
+    #if request.args['token'] != os.getenv('TOKEN'):
+    #    abort(401)
+    #    return
+
+    #d = feedparser.parse(
+    #    f'https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}'
+    #)
+
+    url=f'https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}'
+    print("get "+url)
+    d = feedparser.parse(url)
+
     fg = convert_feed(d)
     return fg.atom_str(pretty=True)
+
