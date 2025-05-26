@@ -5,6 +5,6 @@ services:
     #container_name: "yt-rss"
     build: .
     ports:
-      - 8084:8000
+      - 80:8000
     environment:
       TOKEN: secret
